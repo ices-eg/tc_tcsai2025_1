@@ -29,6 +29,24 @@ bevholt2 <- function(a, b, S) {
   log(a) + log(S) - log(1 + b * S)
 }
 
+# source ssq surface function
+source("02_Model_fitting\\02_Model_fitting_shiny_data_ssqs.R")
+
+# some model fits
+ssqs <-
+  sapply(
+    c("haddock", "cod", "herring"),
+    function(y) {
+      sapply(
+        c("ricker", "bevholt", "bevholt2"),
+        function(x) ssq(get(y), get(x)),
+        simplify = FALSE
+      )
+    },
+    simplify = FALSE
+  )
+
+
 # shiny user interface
 ui <- fluidPage(
   h1("Stock Recruitment fits for ICES TCISA2024"),
@@ -66,6 +84,11 @@ server <- function(input, output, session) {
       cod = cod,
       herring = herring
     )
+  })
+
+  # get ssq data
+  ssq <- reactive({
+    ssqs[[input$data]][[input$model]]
   })
 
   best_fit <- reactive({
