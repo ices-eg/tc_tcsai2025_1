@@ -5,62 +5,6 @@
 # This script shows the steps followed to fit a stock-recruitment model to
 # in the file 'north_sea_herring_SR.csv'
 
-# A short deviation! ----
-
-# install.packages("icesVocab")
-# install.packages("icesSD")
-# install.packages("icesSAG")
-library(icesVocab)
-library(icesSD)
-library(icesSAG)
-?icesVocab
-
-# look up the vocabulary database for herring
-stockcodes <- getCodeList("ICES_StockCode")
-head(stockcodes)
-
-# helper function
-findCode("stock", "herring", full = TRUE, regex = TRUE)
-
-stock_code <- "her.27.3a47d"
-
-getCodeDetail("ICES_StockCode", stock_code)
-
-# look up the stock database for haddock
-her_info <- getSD(stock = stock_code, year = 2018)
-print(t(her_info), quote = FALSE)
-
-# stock assessment results for haddock
-her_key <- icesSAG::findAssessmentKey(stock_code, year = 2018)
-
-# look at the SAG DB web page for this assessment
-browseURL(paste0("https://standardgraphs.ices.dk/ViewCharts.aspx?key=", her_key))
-
-# look at the adviceXplorer app for this assessment
-browseURL(paste0("https://ices-taf.shinyapps.io/advicexplorer/?assessmentkey=", her_key))
-
-her_summary <- getSummaryTable(her_key)[[1]]
-her_summary
-
-# extract SR data
-her_sr <- her_summary[c("Year", "SSB", "recruitment")]
-
-# match years with data in excersise
-her_sr <- her_sr[her_sr$Year %in% 1948:2017,]
-her_sr
-
-
-names(her_sr) <- c("yc", "ssb", "rec")
-her_sr$ssb <- her_sr$ssb / 1000
-her_sr$rec <- her_sr$rec / 1000
-
-
-head(her_sr)
-
-tail(her_sr)
-
-
-
 # Load and explore data ----
 
 # load data from comma-separated file to data.frame
@@ -239,6 +183,66 @@ plot(resids ~ S)
 abline(h = 0, lty = 2)
 
 
+
+
+
+
+
+
+
+# A short deviation! ----
+
+# install.packages("icesVocab")
+# install.packages("icesSD")
+# install.packages("icesSAG")
+library(icesVocab)
+library(icesSD)
+library(icesSAG)
+?icesVocab
+
+# look up the vocabulary database for herring
+stockcodes <- getCodeList("ICES_StockCode")
+head(stockcodes)
+
+# helper function
+findCode("stock", "herring", full = TRUE, regex = TRUE)
+
+stock_code <- "her.27.3a47d"
+
+getCodeDetail("ICES_StockCode", stock_code)
+
+# look up the stock database for haddock
+her_info <- getSD(stock = stock_code, year = 2018)
+print(t(her_info), quote = FALSE)
+
+# stock assessment results for haddock
+her_key <- icesSAG::findAssessmentKey(stock_code, year = 2018)
+
+# look at the SAG DB web page for this assessment
+browseURL(paste0("https://standardgraphs.ices.dk/ViewCharts.aspx?key=", her_key))
+
+# look at the adviceXplorer app for this assessment
+browseURL(paste0("https://ices-taf.shinyapps.io/advicexplorer/?assessmentkey=", her_key))
+
+her_summary <- getSummaryTable(her_key)[[1]]
+her_summary
+
+# extract SR data
+her_sr <- her_summary[c("Year", "SSB", "recruitment")]
+
+# match years with data in excersise
+her_sr <- her_sr[her_sr$Year %in% 1948:2017,]
+her_sr
+
+
+names(her_sr) <- c("yc", "ssb", "rec")
+her_sr$ssb <- her_sr$ssb / 1000
+her_sr$rec <- her_sr$rec / 1000
+
+
+head(her_sr)
+
+tail(her_sr)
 
 
 
