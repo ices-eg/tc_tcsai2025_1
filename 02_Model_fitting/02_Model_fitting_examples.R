@@ -137,6 +137,7 @@ plot(
 
 #==============================================================================
 # Beverton and holt recruitmet model R=b1*S/(b2+S)
+# Beverton and holt recruitmet model R=b3*S/(1+b4*S)
 #==============================================================================
 
 
@@ -261,7 +262,7 @@ points(Rpred ~ S, col = "red", pch = 2)
 #------------------------------------------------------------------------------
 
 # calculate residuals
-resids <- log(Robs / Rpred)
+resids <- log(Robs) - log(Rpred)
 
 # plot them
 plot(resids ~ S)
@@ -327,7 +328,7 @@ ssq <- function(b, S, Robs) {
   # 1. Calculate predicted R for each year
   Rpred <- bevholt(b, S)
   # 2. Calculate log residuals, Ln(obs/pred)
-  resids <- log(Robs / Rpred)
+  resids <- log(Robs) - log(Rpred)
   # 3. Calculate sum of squared residuals
   ssq_resids <- sum(resids^2)
 
@@ -362,7 +363,7 @@ opt
 
 # the fit is not quite there yet, so lets try better starting values.
 # this highlights the presence of multiple 'local' minima
-par0 <- c(20, 5)
+par0 <- c(0, 0)
 opt <- optim(par0, ssq_optim, S = haddock$ssb, Robs = haddock$rec)
 
 opt
@@ -373,7 +374,7 @@ opt
 #------------------------------------------------------------------------------
 
 # predict recruitment over the full S range
-Spred <- seq(0, max(haddock$ssb), length.out = 100)
+Spred <- seq(0, max(haddock$ssb), length.out = 1000)
 Rpred <- bevholt(exp(opt$par), S = Spred)
 
 # plot
@@ -421,7 +422,7 @@ fit <- optim(par0, ssq_optim, S = haddock$ssb, Robs = haddock$rec)
 
 # and calculate the residuals
 Rpred <- bevholt(exp(fit$par), haddock$ssb)
-resids <- log( haddock$rec / Rpred)
+resids <- log(haddock$rec) - log(Rpred)
 
 # and plot a histogram
 hist(resids, nclass = 20)
@@ -457,18 +458,18 @@ hist(rmean_star)
 # resample from the residuals as if the resuduals are random and reestimate the
 # parameters
 r_star <- sample(resids, replace = TRUE)
-opt <- optim(par0, ssq_optim, S = haddock$ssb, Robs = Rpred + r_star)
+opt <- optim(par0, ssq_optim, S = haddock$ssb, Robs = Rpred * exp(r_star))
 opt$par
 
 # do it again
 r_star <- sample(resids, replace = TRUE)
-opt <- optim(par0, ssq_optim, S = haddock$ssb, Robs = Rpred + r_star)
+opt <- optim(par0, ssq_optim, S = haddock$ssb, Robs = Rpred * exp(r_star))
 opt$par
 
 
 # do it lots of times!
 par_star <-
-  replicate(10000, {
+  replicate(1000, {
     r_star <- sample(resids, replace = TRUE)
     opt <- optim(par0, ssq_optim, S = haddock$ssb, Robs = Rpred * exp(r_star),
                  method = "BFGS")
