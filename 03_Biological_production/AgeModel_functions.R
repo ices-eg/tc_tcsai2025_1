@@ -67,9 +67,9 @@ RecPlot <- function(SR, Slim=NULL, Rlim=NULL)
 
 Amax <- 15
 Tmax <- 25
-Ninit <- 1000
+Ninit <- 10
 M <- rep(0.2, Amax)
-Fmort <- c(0, 0, rep(0.3,Amax-2))
+Fmort <- c(.5, .5, rep(0.3,Amax-2))
 mat <- c(0, 0, rep(1,Amax-2))
 w <- 10 * (1-exp(-0.5*((1:Amax)+0.1)))^3
 alpha <- 1000

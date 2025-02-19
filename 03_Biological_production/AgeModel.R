@@ -49,15 +49,17 @@ N[,1] <- Nvec
 SSB[,1] <- N[,1] * mat * w
 
 N[1,2] <- (alpha*sum(SSB[,1])) / (beta+sum(SSB[,1]))
-for(a in 1:(Amax-1))
-  N[a+1,2] <- N[a,1] * exp(-M[a]-Fmort[a])
+for (a in 1:(Amax - 1)) {
+  N[a + 1, 2] <- N[a, 1] * exp(-M[a] - Fmort[a])
+}
 SSB[,2] <- N[,2] * mat * w
 
 for(t in 1:(Tmax-1))
 {
   N[1,t+1] <- (alpha*sum(SSB[,t])) / (beta+sum(SSB[,t]))
-  for(a in 1:(Amax-1))
-    N[a+1,t+1] <- N[a,t] * exp(-M[a]-Fmort[a])
+  for (a in 1:(Amax - 1)) {
+    N[a + 1, t + 1] <- N[a, t] * exp(-M[a] - Fmort[a])
+  }
   SSB[,t+1] <- N[,t+1] * mat * w
 }
 
@@ -91,6 +93,9 @@ data.frame(SSB.curve, Rec.curve)
 ## 4  Recruitment variability
 
 v <- 1000
+
+N <- matrix(nrow = Amax, ncol = Tmax)
+SSB <- matrix(nrow = Amax, ncol = Tmax)
 
 ## Year 1
 N[,1] <- Nvec
