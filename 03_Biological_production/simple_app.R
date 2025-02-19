@@ -82,4 +82,6 @@ server <- function(input, output) {
   })
 }
 
-shinyApp(ui = ui, server = server)
+# combine into one object and launch
+app <- shinyApp(ui, server)
+runApp(app, launch.browser = TRUE)
