@@ -5,7 +5,7 @@ catch <- read.csv("06_VPA/haddock_catch.csv", header = TRUE, check.names = FALSE
 Year <- as.numeric(row.names(catch))
 
 ## Run model
-model <- vpa(catch, Mvec = 0.2, Fterm = 0.1, Fages = 3)
+model <- vpa(catch, Mvec = 0.2, Fterm = 0.2, Fages = 3)
 
 ## View results
 par(mfrow = c(2, 2))
@@ -18,7 +18,7 @@ barplot(model$N[, 1], ylab = "Recruitment at age 0", main = "Recruitment (N age 
 
 ## Selectivity
 round(model$F, 3)
-plot(colMeans(model$F) / max(colMeans(model$F)),
+plot(colMeans(model$F[nrow(model$F) - (0:2),]) / max(colMeans(model$F[nrow(model$F) - (0:2),])),
   ylim = c(0, 1.05),
   type = "l", main = "Selectivity", xlab = "Age", ylab = "Mean F at age"
 )
