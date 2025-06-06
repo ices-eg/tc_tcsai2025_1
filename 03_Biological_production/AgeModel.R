@@ -45,7 +45,6 @@ year <- 1:Tmax
 N <- matrix(nrow=Amax, ncol=Tmax)
 SSB <- matrix(nrow=Amax, ncol=Tmax)
 
-N[,1] <- Nvec
 SSB[,1] <- N[,1] * mat * w
 
 N[1,2] <- (alpha*sum(SSB[,1])) / (beta+sum(SSB[,1]))

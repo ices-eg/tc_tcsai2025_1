@@ -5,7 +5,7 @@ catch <- read.csv("06_VPA/haddock_catch.csv", header = TRUE, check.names = FALSE
 Year <- as.numeric(row.names(catch))
 
 ## Run model
-model <- vpa(catch, Mvec = 0.2, Fterm = 0.2, Fages = 3)
+model <- vpa(catch, Mvec = 0.2, Fterm = 0.1, Fages = 3)
 
 ## View results
 par(mfrow = c(2, 2))

@@ -98,9 +98,9 @@ fit$refpts
 init2 <-
   c(
     logr = log(1),
-    logK = log(950),
-    logBinit = log(500),
-    logq = log(3)
+    logK = log(550),
+    logBinit = log(225),
+    logq = log(1.25)
   )
 
 opt2 <- nlminb(init2, Schaefer, data = haddock, control = list(eval.max = 1e6, iter.max = 1e6))
@@ -109,7 +109,10 @@ opt2
 fit2 <- Schaefer(opt2$par, haddock, verbose = TRUE)
 plot_shaefer(fit2, haddock, main = "Haddock")
 
-
+opt3 <- nlminb(init2, Schaefer, data = haddock[haddock$Year > 2000, ], control = list(eval.max = 1e6, iter.max = 1e6))
+opt3
+fit3 <- Schaefer(opt3$par, haddock[haddock$Year > 2000, ], verbose = TRUE)
+plot_shaefer(fit3, haddock[haddock$Year > 2000, ], main = "Haddock")
 
 
 ################################################################################

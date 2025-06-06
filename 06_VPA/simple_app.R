@@ -3,6 +3,7 @@ library(ggplot2)
 
 ## Functions
 
+
 vpa <- function(C, Mvec, Fterm, Fages) {
   ## Prepare matrices
   C <- as.matrix(C)

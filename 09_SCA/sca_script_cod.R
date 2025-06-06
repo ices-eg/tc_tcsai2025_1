@@ -51,7 +51,7 @@ opt4 <- nlminb(par, sca, data = data)
 opt4
 
 opt5 <- nlminb(par, sca, data = data,
-               control = list(eval.max = 1000, iter.max = 1000))
+               control = list(eval.max = 1000, iter.max = 1000), hessian = TRUE)
 opt5
 
 
@@ -82,7 +82,7 @@ opt4$value <- opt4$objective
 opt5$value <- opt5$objective
 opt6$value <- opt6$objective
 
-opts <- list(opt1 = opt1, opt2 = opt2, opt4 = opt4, opt5 = opt5, opt6 = opt6)
+opts <- list(opt1 = opt1, opt2 = opt2, opt4 = opt4, opt5 = opt5)
 sapply(opts,
        function(x) {
          c(value = x$value,
@@ -91,7 +91,7 @@ sapply(opts,
 
 # lets go with RTMB nlminb solution
 
-run <- opt6
+run <- opt5
 run
 
 # evaluate the model at the optimised parameter values
